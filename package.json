@@ -4,7 +4,7 @@
   "description": "A minimal Electron React application",
   "main": "main.js",
   "scripts": {
-    "dev":"webpack --watch",
+    "dev": "webpack --watch",
     "start": "electron ."
   },
   "repository": "https://github.com/electron/electron-quick-start",
