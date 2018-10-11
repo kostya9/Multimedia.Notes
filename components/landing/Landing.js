@@ -9,7 +9,7 @@ import './Landing.scss'
 
 export default class Landing extends React.Component {
     render() {
-        return
+        return (
         <Box align='center' justify='center' alignSelf='center' flex='grow' responsive={true} full='vertical'>
             <Columns justify='center'>
                 <Box align='center' textAlign='center'>
@@ -23,6 +23,6 @@ export default class Landing extends React.Component {
                     </Card>
                 </Box>
             </Columns>
-        </Box>
+        </Box>);
     }
 } 
