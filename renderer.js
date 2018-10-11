@@ -5,10 +5,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import 'grommet/scss/vanilla/index.scss';
+import Landing from './components/landing/Landing';
+
 class App extends React.Component {
   render () {
     return (
-      <h1>Minimalistic Electron React Boilerplate Code :)</h1>
+      <Landing></Landing>
     )
   }
 }

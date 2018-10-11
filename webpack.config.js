@@ -12,7 +12,16 @@ module.exports={
         query:{
           presets:['react','es2015']
         }
+      },
+      {
+        test: /\.scss$/,
+        loader: 'style!css!sass?outputStyle=compressed'
       }
+    ]
+  },
+  sassLoader: {
+    includePaths: [
+      './node_modules'
     ]
   }
 }

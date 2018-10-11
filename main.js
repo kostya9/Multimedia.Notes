@@ -7,13 +7,15 @@ const BrowserWindow = electron.BrowserWindow
 const path = require('path')
 const url = require('url')
 
+require('electron-reload')(__dirname)
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({minWidth: 1200, minHeight: 800})
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
