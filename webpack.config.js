@@ -1,5 +1,6 @@
 module.exports={
   entry:'./renderer.js',
+  target: 'node',
   output:{
     filename:'./renderer-bundle.js'
   },
@@ -10,7 +11,7 @@ module.exports={
         exclude: /(node_modules|bower_components)/,
         loader: 'babel',
         query:{
-          presets:['react','es2015']
+          presets:['react','babel-preset-env']
         }
       },
       {

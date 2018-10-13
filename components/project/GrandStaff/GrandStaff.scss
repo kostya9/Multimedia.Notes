@@ -1,9 +1,18 @@
 $measure-width: 300px;
-$space-height: 20px;
+$row-height: 15px;
 $line-height: 1px;
 
 
 .note-line {
+    width: $measure-width;
+    height: $row-height;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.note-line-internal {
+
     width: $measure-width;
     height: $line-height;
     background-color: black;
@@ -11,11 +20,11 @@ $line-height: 1px;
 
 .note-space {
     width: $measure-width;
-    height: $space-height;
+    height: $row-height;
 }
 
 .note-bar {
-    height: 5 * $line-height + 4 * $space-height;
+    height: 8 * $row-height + $line-height;
     width: 2px;
     background-color: black;
     display: inline-block;
