@@ -4,14 +4,23 @@
 
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
+
 
 import 'grommet/scss/vanilla/index.scss';
 import Landing from './components/landing/Landing';
+import Project from './components/project/Project';
+
 
 class App extends React.Component {
   render () {
     return (
-      <Landing></Landing>
+        <Router>
+            <Switch>
+                <Route exact path="/" component={Landing} />
+                <Route path="/project" component={Project} />
+            </Switch>
+        </Router>
     )
   }
 }
