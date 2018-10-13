@@ -14,6 +14,10 @@ module.exports={
         }
       },
       {
+        test: /\.svg$/,
+        loader: "svg-inline-loader"
+      },
+      {
         test: /\.scss$/,
         loader: 'style!css!sass?outputStyle=compressed'
       }
