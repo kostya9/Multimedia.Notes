@@ -1,0 +1,36 @@
+$measure-width: 300px;
+$row-height: 15px;
+$line-height: 1px;
+
+
+.note-line {
+    width: $measure-width;
+    height: $row-height;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.note-line-internal {
+
+    width: $measure-width;
+    height: $line-height;
+    background-color: black;
+}
+
+.note-space {
+    width: $measure-width;
+    height: $row-height;
+}
+
+.note-bar {
+    height: 8 * $row-height + $line-height;
+    width: 2px;
+    background-color: black;
+    display: inline-block;
+}
+
+.note-measure-inner {
+    width: $measure-width;
+    display: inline-block;
+}
