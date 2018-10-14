@@ -12,7 +12,6 @@ export const projectReducer = (state = {}, action) => {
         }
         case ADD_NOTE:
         {
-            console.log(action, state)
             const measureNumber = action.measureNumber;
             const changedMeasure = state.measures.find(m => m.number == measureNumber);
 
