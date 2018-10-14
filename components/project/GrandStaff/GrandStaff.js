@@ -20,7 +20,7 @@ class GrandStaff extends React.Component {
     render() {
         const measures = this.props.measures;
         return <div>
-                {measures.map(m => <Measure key={m.number} number={m.number} addNote={(n) => this.props.addNote(m.number, n)}/>)}
+                {measures.map(m => <Measure key={m.number} number={m.number} notes={m.notes} addNote={(n) => this.props.addNote(m.number, n)}/>)}
             </div>
     }
 }
