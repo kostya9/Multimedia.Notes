@@ -8,12 +8,12 @@ import Box from 'grommet/components/Box';
 import './Landing.scss'
 
 import { Link, Redirect } from "react-router-dom";
-import { INIT_PROJECT } from '../../actions/project';
+import { INIT_PROJECT, init } from '../../actions/project';
 import { connect } from 'react-redux';
 
 const LandingDispatch = (dispatch) => {
     return {
-        initNewProject: () => dispatch({ type: INIT_PROJECT })
+        initNewProject: () => dispatch(init())
     }
 }
 

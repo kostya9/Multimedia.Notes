@@ -9,33 +9,23 @@ var synth = new Tone.Synth().toMaster();
 
 //play a middle 'C' for the duration of an 8th note
 
-const Line = ({ note }) => <div className="note-line" onClick={() => play(note)}><div className="note-line-internal"></div></div>
-const Space = ({ note }) => <div className="note-space" onClick={() => play(note)}><div className="note-space-internal"></div></div>
+const Line = ({ note, addNote }) => <div className="note-line" onClick={() => {play(note); addNote(note);}}><div className="note-line-internal"></div></div>
+const Space = ({ note, addNote }) => <div className="note-space" onClick={() => {play(note); addNote(note);}}><div className="note-space-internal"></div></div>
 const Bar = () => <div className="note-bar"></div>
 
 function play(n) {
-    console.log(1)
+    console.log(n)
     synth.triggerAttackRelease(n, "8n");
 }
 
 export default class Measure extends React.Component {
-    addNote() {
-        
-    }
-
     render() {
+        const number = this.props.number;
+        const notes = ['F5', 'E5', 'D5', 'C5', 'B4', 'A4', 'G4', 'F4', 'E4']
         return (
         <span className="note-measure">
             <div className="note-measure-inner">
-                <Line note='F5' onClick={this.addNote.bind(this)}/>
-                <Space note='E5' />
-                <Line note='D5' />
-                <Space note='C5' />
-                <Line note='B4' />
-                <Space note='A4' />
-                <Line note='G4' />
-                <Space note='F4' />
-                <Line note='E4' />
+                {notes.map((n, i) => i % 2 == 0 ? <Line key={n} note={n} addNote={this.props.addNote} /> : <Space key={n} addNote={this.props.addNote} note={n} />)}
             </div>
             <Bar />
         </span>)
