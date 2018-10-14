@@ -19,9 +19,8 @@ const LandingDispatch = (dispatch) => {
 
 class Landing extends React.Component {
     onNewProject() {
-        console.log(this)
         this.props.initNewProject();
-        this.setState({...this.state, shouldOpenNewProject: true})
+        this.setState({shouldOpenNewProject: true})
     }
 
     render() {
