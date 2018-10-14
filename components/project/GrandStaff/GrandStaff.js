@@ -1,17 +1,27 @@
 import React from 'react';
-import {observer} from "mobx-react";
+import PropTypes from 'prop-types'
+import {connect} from 'react-redux';
 
 import Measure from './Measure/Measure'
 import './GrandStaff.scss';
 import range from '../../../utils/range';
-import { observable } from 'mobx';
+import { MeasurePropType } from '../../propTypes/grandStaff';
 
-@observer
-export class GrandStaff extends React.Component {
+const GrandStaffState = (state) => ({
+    measures: state.measures
+})
+
+class GrandStaff extends React.Component {
     render() {
-        const measures = range(0, 5);
+        const measures = this.props.measures;
         return <div>
-                {measures.map(i => <Measure key={i} number={i}/>)}
+                {measures.map(m => <Measure key={m.number} number={m.number}/>)}
             </div>
     }
 }
+
+GrandStaff.propTypes = {
+    measures: PropTypes.arrayOf(MeasurePropType).isRequired
+}
+
+export default GrandStaff = connect(GrandStaffState)(GrandStaff);

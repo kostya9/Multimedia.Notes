@@ -10,17 +10,23 @@ import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
 import 'grommet/scss/vanilla/index.scss';
 import Landing from './components/landing/Landing';
 import Project from './components/project/Project';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import { projectReducer } from './reducers/project';
 
+const store = new createStore(projectReducer);
 
 class App extends React.Component {
   render () {
     return (
-        <Router>
-            <Switch>
-                <Route exact path="/" component={Landing} />
-                <Route path="/project" component={Project} />
-            </Switch>
-        </Router>
+        <Provider store={store}>
+            <Router>
+                <Switch>
+                    <Route exact path="/" component={Landing} />
+                    <Route path="/project" component={Project} />
+                </Switch>
+            </Router>
+        </Provider>
     )
   }
 }

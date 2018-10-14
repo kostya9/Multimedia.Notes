@@ -13,6 +13,9 @@ require('electron-reload')(__dirname)
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
+const globalShortcut = electron.globalShortcut
+const remote = electron.remote
+
 function createWindow () {
   // Create the browser window.
     mainWindow = new BrowserWindow({
@@ -20,6 +23,11 @@ function createWindow () {
             experimentalFeatures: true
         }
     })
+
+    globalShortcut.register('f5', function() {
+        app.relaunch();
+        app.exit(0);
+	})
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({

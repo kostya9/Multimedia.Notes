@@ -7,7 +7,7 @@ import Sidebar from 'grommet/components/Sidebar';
 
 import './Project.scss';
 import SVG from 'react-inlinesvg';
-import { GrandStaff } from './GrandStaff/GrandStaff';
+import GrandStaff from './GrandStaff/GrandStaff';
 
 // NOTES FROM https://www.freepik.com/free-vector/musical-notes_795161.htm
 
