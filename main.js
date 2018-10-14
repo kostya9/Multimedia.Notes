@@ -17,6 +17,8 @@ const globalShortcut = electron.globalShortcut
 const remote = electron.remote
 
 function createWindow () {
+    //BrowserWindow.addDevToolsExtension('C:\\Users\\{user}}\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\lmhkpmbekcpmknklioeibfkpmmfibljd\\2.15.3_0')
+
   // Create the browser window.
     mainWindow = new BrowserWindow({
         minWidth: 1200, minHeight: 800, width: 1200, height: 800, webPreferences: {
