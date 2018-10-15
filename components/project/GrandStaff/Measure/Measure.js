@@ -13,7 +13,7 @@ export default class Measure extends React.Component {
         const number = this.props.number;
         const propNotes = this.props.notes;
         const notes = ['F5', 'E5', 'D5', 'C5', 'B4', 'A4', 'G4', 'F4', 'E4']
-        const writtenNotes = notes.map(n => ({n, written: propNotes.filter(pn => pn.value === n).map(pn => pn.length)}));
+        const writtenNotes = notes.map(n => ({n, written: propNotes.map(pn => pn.value === n ? pn.length : null)}));
         return (
         <span className="note-measure">
             <div className="note-measure-inner">

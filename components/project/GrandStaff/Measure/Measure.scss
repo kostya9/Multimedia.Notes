@@ -16,12 +16,21 @@ $line-height: 1px;
     width: $measure-width;
     height: $line-height;
     background-color: black;
+    position:relative;
 }
 
 .note-space {
     width: $measure-width;
     height: $row-height;
+
 }
+
+.note-space-internal {
+    width: $measure-width;
+    height: $row-height;
+    position:relative;
+}
+
 
 .note-bar {
     height: 8 * $row-height + $line-height;
@@ -33,4 +42,16 @@ $line-height: 1px;
 .note-measure-inner {
     width: $measure-width;
     display: inline-block;
+}
+
+.note-staff-img {
+    position: absolute;
+    top: 25%;
+}
+
+.note-staff-img > svg 
+{
+    transform: translateY(-75%);
+    height: 40px;
+    width: auto;
 }
