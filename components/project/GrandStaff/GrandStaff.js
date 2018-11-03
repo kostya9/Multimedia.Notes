@@ -8,21 +8,27 @@ import Measure from './Measure/Measure'
 import './GrandStaff.scss';
 import range from '../../../utils/range';
 import { MeasurePropType } from '../../propTypes/grandStaff';
-import { addNote } from '../../../actions/project';
+import { addNote, removeNote } from '../../../actions/project';
 
 const GrandStaffState = (state) => ({
     measures: state.measures
 })
 
 const GrandStaffActions = (dispatch) => ({
-    addNote: (measureNumber, note, position) => dispatch(addNote(measureNumber, note, position))
+    addNote: (measureNumber, note, position) => dispatch(addNote(measureNumber, note, position)),
+    removeNote: (measureNumber, note, position) => dispatch(removeNote(measureNumber, note, position))
 })
 
 class GrandStaff extends React.Component {
     render() {
         const measures = this.props.measures;
         return <div>
-                {measures.map(m => <Measure key={m.number} number={m.number} notes={m.notes} addNote={(v, p) => this.props.addNote(m.number, v, p)}/>)}
+                {measures.map(m => 
+                    <Measure key={m.number} 
+                             number={m.number} 
+                             notes={m.notes} 
+                             addNote={(v, p) => this.props.addNote(m.number, v, p)} 
+                             removeNote={(v, p) => this.props.removeNote(m.number, v, p)}/>)}
             </div>
     }
 }

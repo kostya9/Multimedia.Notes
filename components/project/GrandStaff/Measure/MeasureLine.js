@@ -30,19 +30,25 @@ export default class MeasureLine extends React.Component {
     }
 
     onNoteClick(e) {
-        const {addNote, value} = this.props;
+        const {addNote, removeNote, value} = this.props;
         const {width, left} = this.state;
         const mouseAdjustment = -10; /* Some mouse adjustment for visual accuracy */
         const offset = (e.nativeEvent.clientX - left) + mouseAdjustment;
         const position = offset / width;
         play(value); 
-        addNote(value, position);
+
+        if (e.type === 'click') {
+            addNote(position);
+        } else if (e.type === 'contextmenu') {
+            removeNote(position);
+        }
+
     } 
 
     render() {
         const classOuter = this.props.isSpace ? 'note-space' : 'note-line';
         const classInner = classOuter + '-internal';
-        return (<div ref={this.refCallback.bind(this)} className={classOuter} onClick={this.onNoteClick.bind(this)}>
+        return (<div ref={this.refCallback.bind(this)} className={classOuter} onClick={this.onNoteClick.bind(this)} onContextMenu={this.onNoteClick.bind(this)}>
             <div className={classInner}>
             {this.props.notes.map(this.renderNote)}
             </div>
