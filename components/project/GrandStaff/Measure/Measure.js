@@ -12,12 +12,12 @@ export default class Measure extends React.Component {
     render() {
         const number = this.props.number;
         const propNotes = this.props.notes;
-        const notes = ['F5', 'E5', 'D5', 'C5', 'B4', 'A4', 'G4', 'F4', 'E4']
-        const writtenNotes = notes.map(n => ({n, written: propNotes.map(pn => pn.value === n ? pn.length : null)}));
+        const lines = ['F5', 'E5', 'D5', 'C5', 'B4', 'A4', 'G4', 'F4', 'E4']
+        const writtenNotes = lines.map(line => ({line, notes: propNotes.filter(n => n.value === line)}));
         return (
         <span className="note-measure">
             <div className="note-measure-inner">
-                {writtenNotes.map((n, i) => <MeasureLine key={n.n} addNote={this.props.addNote} value={n.n} notes={n.written} isSpace={i % 2 === 1}/>)}
+                {writtenNotes.map((n, i) => <MeasureLine key={n.line} addNote={this.props.addNote} value={n.line} notes={n.notes} isSpace={i % 2 === 1}/>)}
             </div>
             <Bar />
         </span>)

@@ -15,14 +15,14 @@ const GrandStaffState = (state) => ({
 })
 
 const GrandStaffActions = (dispatch) => ({
-    addNote: (measureNumber, note) => dispatch(addNote(measureNumber, note))
+    addNote: (measureNumber, note, position) => dispatch(addNote(measureNumber, note, position))
 })
 
 class GrandStaff extends React.Component {
     render() {
         const measures = this.props.measures;
         return <div>
-                {measures.map(m => <Measure key={m.number} number={m.number} notes={m.notes} addNote={(n) => this.props.addNote(m.number, n)}/>)}
+                {measures.map(m => <Measure key={m.number} number={m.number} notes={m.notes} addNote={(v, p) => this.props.addNote(m.number, v, p)}/>)}
             </div>
     }
 }
