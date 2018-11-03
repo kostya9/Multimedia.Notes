@@ -32,7 +32,8 @@ export default class MeasureLine extends React.Component {
     onNoteClick(e) {
         const {addNote, value} = this.props;
         const {width, left} = this.state;
-        const offset = (e.nativeEvent.clientX - left) - 5;
+        const mouseAdjustment = -10; /* Some mouse adjustment for visual accuracy */
+        const offset = (e.nativeEvent.clientX - left) + mouseAdjustment;
         const position = offset / width;
         play(value); 
         addNote(value, position);
