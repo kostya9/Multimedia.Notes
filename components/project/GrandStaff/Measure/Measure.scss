@@ -47,6 +47,7 @@ $line-height: 1px;
 .note-staff-img {
     position: absolute;
     top: 25%;
+    pointer-events: none;
 }
 
 .note-staff-img > svg 
