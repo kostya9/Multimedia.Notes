@@ -62,7 +62,8 @@ export const projectReducer = (state = {}, action) => {
         {
             const {position, measureNumber, note} = action;
             const changedMeasure = state.measures.find(m => m.number === measureNumber);
-            const toRemove = findIntersection(changedMeasure.notes, position, note);
+            const adjustedPosition = adjustPosition(state.chosenLength, position);
+            const toRemove = findIntersection(changedMeasure.notes, adjustedPosition, note);
 
             if (toRemove == null) {
                 return state;
