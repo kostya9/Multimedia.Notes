@@ -3,10 +3,6 @@ import { range, stepRange } from "../utils/range";
 import { nearest } from "../utils/nearest";
 
 const parseLength = (length) => {
-    if(length == 'n') {
-        return 1;
-    }
-
     return 1 / +length[0];
 }
 
