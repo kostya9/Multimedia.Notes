@@ -26,11 +26,13 @@ const adjustPosition = (length, position) => {
     return nearest(noteRange, position);
 }
 
+const minMeasures = 5;
+
 export const projectReducer = (state = {}, action) => {
     switch(action.type) {
         case INIT_PROJECT:
         {
-            let measures = range(0, 5).map(r => ({number: r, notes: []}));
+            let measures = range(0, minMeasures).map(r => ({number: r, notes: []}));
             return {
                 measures,
                 chosenLength: '4n'
@@ -56,12 +58,19 @@ export const projectReducer = (state = {}, action) => {
             const newMeasure = {
                 number: changedMeasure.number,
                 notes: [...changedMeasure.notes, newNote]
-            } 
+            }
+
+            const newMeasures = state.measures.map(m => m.number === measureNumber ? newMeasure : m);
+
+            // If a note was added at last measure - add a measure
+            if(measureNumber === newMeasures.length - 1) {
+                newMeasures.push({number: measureNumber + 1, notes: []});
+            }
 
             return {
                 ...state,
                 previewNote: null,
-                measures: state.measures.map(m => m.number === measureNumber ? newMeasure : m)
+                measures: newMeasures
             }
         }
         case REMOVE_NOTE:
@@ -76,12 +85,28 @@ export const projectReducer = (state = {}, action) => {
                 return state;
             }
 
-            let newMeasure = {...changedMeasure, notes: changedMeasure.notes.filter(n => n !== toRemove)};
+            const newMeasure = {...changedMeasure, notes: changedMeasure.notes.filter(n => n !== toRemove)};
+            const newMeasures = state.measures.map(m => m.number === measureNumber ? newMeasure : m);
+
+
+            // Remove measures that have no notes beside them starting from the end
+            if(measureNumber === newMeasures.length - 2) {
+                let curMeasure = measureNumber;
+                while(newMeasures.find(m => m.number === curMeasure).notes.length === 0 && newMeasures.find(m => m.number === curMeasure + 1).notes.length === 0) {
+                    newMeasures.pop();
+
+                    if(curMeasure === minMeasures - 1)
+                        break;
+
+                    curMeasure--;
+                }
+            }
+
 
             return {
                 ...state,
                 previewNote: null,
-                measures: state.measures.map(m => m.number === measureNumber ? newMeasure : m)
+                measures: newMeasures
             }
         }
         case PREVIEW_CHANGE:
