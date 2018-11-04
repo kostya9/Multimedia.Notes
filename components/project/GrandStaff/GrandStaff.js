@@ -35,9 +35,14 @@ class GrandStaff extends React.Component {
         return null;
     }
 
+    onMouseLeave() {
+        const {previewChange} = this.props;
+        previewChange(null, null, null);
+    }
+
     render() {
         const {measures, previewNote, addNote, removeNote, previewChange} = this.props;
-        return <div>
+        return <div onMouseLeave={this.onMouseLeave.bind(this)}>
                 {measures.map(m => 
                     <Measure key={m.number} 
                              number={m.number} 

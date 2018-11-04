@@ -29,7 +29,7 @@ export const projectReducer = (state = {}, action) => {
             let measures = range(0, 5).map(r => ({number: r, notes: []}));
             return {
                 measures,
-                chosenLength: '8n'
+                chosenLength: '4n'
             }
         }
         case ADD_NOTE:
@@ -79,6 +79,11 @@ export const projectReducer = (state = {}, action) => {
         case PREVIEW_CHANGE:
         {
             const {position, measureNumber, note} = action;
+            
+            if(!position) {
+                return {...state, previewNote: null};
+            }
+
             const adjustedPosition = adjustPosition(state.chosenLength, position);
             const changedMeasure = state.measures.find(m => m.number === measureNumber);
 
