@@ -6,6 +6,7 @@ const parseLength = (length) => {
     return 1 / +length[0];
 }
 
+// this is bugged
 const findIntersection = (notes, position, value) => {
     return notes
         .filter(n => n.value === value)
@@ -51,6 +52,7 @@ export const projectReducer = (state = {}, action) => {
 
             return {
                 ...state,
+                previewNote: null,
                 measures: state.measures.map(m => m.number === measureNumber ? newMeasure : m)
             }
         }
@@ -69,6 +71,7 @@ export const projectReducer = (state = {}, action) => {
 
             return {
                 ...state,
+                previewNote: {...toRemove, measureNumber},
                 measures: state.measures.map(m => m.number === measureNumber ? newMeasure : m)
             }
         }
