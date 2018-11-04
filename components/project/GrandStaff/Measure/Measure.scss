@@ -17,6 +17,13 @@ $line-height: 1px;
     height: $line-height;
     background-color: black;
     position:relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .note-staff-img {
+        transform: translateY(-100%) translateY(14px);
+    }
 }
 
 .note-space {
@@ -29,6 +36,13 @@ $line-height: 1px;
     width: $measure-width;
     height: $row-height;
     position:relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .note-staff-img {
+        transform: translateY(-100%) translateY(20px);
+    }
 }
 
 
@@ -46,13 +60,11 @@ $line-height: 1px;
 
 .note-staff-img {
     position: absolute;
-    top: 25%;
     pointer-events: none;
 }
 
 .note-staff-img > svg 
 {
-    transform: translateY(-75%);
-    height: 40px;
-    width: auto;
+    height: auto;
+    width: inherit;
 }

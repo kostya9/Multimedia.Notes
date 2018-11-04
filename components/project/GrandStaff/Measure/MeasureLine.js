@@ -4,7 +4,7 @@ import SVG from 'react-inlinesvg';
 
 import Tone from 'tone';
 import { NotePropType } from '../../../propTypes/grandStaff';
-import { mapNoteLengthToSrc } from '../../../resources/noteLengthResourceMap';
+import { mapNoteLengthToSvg } from '../../../resources/noteLengthResourceMap';
 
 //create a synth and connect it to the master output (your speakers)
 var synth = new Tone.Synth().toMaster();
@@ -27,8 +27,9 @@ export default class MeasureLine extends React.Component {
 
     renderNote(n, i, isPreview = false) {
         const left = n.position * 100 + '%';
-        const path = mapNoteLengthToSrc(n.length);
-        return <SVG src={path} className='note-staff-img' style={{left: left, opacity: isPreview ? 0.5 : 1}} key={i}/>
+        const svg = mapNoteLengthToSvg(n.length);
+        const width = svg.size + 'px';
+        return <SVG src={svg.src} className='note-staff-img' style={{left: left, opacity: isPreview ? 0.5 : 1, width: width}} key={i}/>
     }
 
     onNoteClick(e) {
