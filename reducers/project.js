@@ -22,7 +22,7 @@ const findIntersection = (notes, position, value, length) => {
 
 const adjustPosition = (length, position) => {
     const numericLength = parseLength(length);
-    const noteRange = stepRange(0, 1, numericLength);
+    const noteRange = stepRange(0, 1 - numericLength, 1/8); // 1/8 - min step
     return nearest(noteRange, position);
 }
 

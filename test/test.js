@@ -3,7 +3,7 @@ const range = (start, length) => {
 }
 
 const stepRange = (start, end, step) => {
-    return range(start, (end - start) / step).map(el => el * step);
+    return Array.from({ length: 1 + (end - start) / step }, (_, i) => start + i * step);
 }
 
-console.log(stepRange(3, 5, 1))
+console.log(stepRange(3, 6, .5))

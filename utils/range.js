@@ -3,5 +3,5 @@ export const range = (start, length) => {
 }
 
 export const stepRange = (start, end, step) => {
-    return range(start, (end - start) / step).map(el => el * step);
+    return Array.from({ length: 1 + (end - start) / step }, (_, i) => start + i * step);
 }
