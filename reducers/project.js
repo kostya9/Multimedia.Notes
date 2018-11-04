@@ -6,11 +6,18 @@ const parseLength = (length) => {
     return 1 / +length[0];
 }
 
-// this is bugged
-const findIntersection = (notes, position, value) => {
+const findIntersection = (notes, position, value, length) => {
+    const numericLength = parseLength(length);
+
+    const isIntersectingWith = (n) => {
+        const nNumericLength = parseLength(n.length);
+        return (position >= (n.position) && position < (n.position + nNumericLength))
+            || (n.position >= position && n.position < (position + numericLength));
+    }
+
     return notes
         .filter(n => n.value === value)
-        .find(n => position >= (n.position) && position < (n.position + parseLength(n.length)))
+        .find(n => isIntersectingWith(n));
 }
 
 const adjustPosition = (length, position) => {
@@ -32,17 +39,18 @@ export const projectReducer = (state = {}, action) => {
         case ADD_NOTE:
         {
             const {position, measureNumber, note} = action;
-            const adjustedPosition = adjustPosition(state.chosenLength, position);
+            const length = state.chosenLength;
+            const adjustedPosition = adjustPosition(length, position);
             const changedMeasure = state.measures.find(m => m.number === measureNumber);
 
-            if(findIntersection(changedMeasure.notes, adjustedPosition, note) != null) {
+            if(findIntersection(changedMeasure.notes, adjustedPosition, note, length) != null) {
                 return state;
             }
             
             const newNote = {
                 value: note, 
                 position: adjustedPosition, 
-                length: state.chosenLength
+                length: length
             };
             
             const newMeasure = {
@@ -59,9 +67,10 @@ export const projectReducer = (state = {}, action) => {
         case REMOVE_NOTE:
         {
             const {position, measureNumber, note} = action;
+            const length = state.chosenLength;
             const changedMeasure = state.measures.find(m => m.number === measureNumber);
-            const adjustedPosition = adjustPosition(state.chosenLength, position);
-            const toRemove = findIntersection(changedMeasure.notes, adjustedPosition, note);
+            const adjustedPosition = adjustPosition(length, position);
+            const toRemove = findIntersection(changedMeasure.notes, adjustedPosition, note, length);
 
             if (toRemove == null) {
                 return state;
@@ -71,19 +80,20 @@ export const projectReducer = (state = {}, action) => {
 
             return {
                 ...state,
-                previewNote: {...toRemove, measureNumber},
+                previewNote: null,
                 measures: state.measures.map(m => m.number === measureNumber ? newMeasure : m)
             }
         }
         case PREVIEW_CHANGE:
         {
             const {position, measureNumber, note} = action;
+            const length = state.chosenLength;
             
             if(!position) {
                 return {...state, previewNote: null};
             }
 
-            const adjustedPosition = adjustPosition(state.chosenLength, position);
+            const adjustedPosition = adjustPosition(length, position);
             const changedMeasure = state.measures.find(m => m.number === measureNumber);
 
             const noteIsSame = 
@@ -96,14 +106,14 @@ export const projectReducer = (state = {}, action) => {
                 return state;
             }
 
-            if(findIntersection(changedMeasure.notes, adjustedPosition, note) != null) {
+            if(findIntersection(changedMeasure.notes, adjustedPosition, note, length) != null) {
                 return {...state, previewNote: null};
             }
 
             const previewNote = {
                 value: note, 
                 position: adjustedPosition, 
-                length: state.chosenLength,
+                length: length,
                 measureNumber: measureNumber
             };
 

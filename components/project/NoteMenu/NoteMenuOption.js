@@ -8,10 +8,11 @@ import { mapNoteLengthToSvg } from '../../resources/noteLengthResourceMap';
 export default class NoteMenuOption extends React.Component {
     render() {
         const svg = mapNoteLengthToSvg(this.props.length);
-        const width = svg.size + 'px';
+        const width = 1.5 * svg.size + 'px';
         return (<Card
             textAlign='center'
             textSize='small'
+            justify='center'
             thumbnail={<SVG src={svg.src} className='note-tool-img' style={{width: width}}/>}
             label={this.props.description} >
         </Card>);
