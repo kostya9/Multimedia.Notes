@@ -90,16 +90,10 @@ export const projectReducer = (state = {}, action) => {
 
 
             // Remove measures that have no notes beside them starting from the end
-            if(measureNumber === newMeasures.length - 2) {
-                let curMeasure = measureNumber;
-                while(newMeasures.find(m => m.number === curMeasure).notes.length === 0 && newMeasures.find(m => m.number === curMeasure + 1).notes.length === 0) {
-                    newMeasures.pop();
-
-                    if(curMeasure === minMeasures - 1)
-                        break;
-
-                    curMeasure--;
-                }
+            let toDelete = newMeasures.length - 1;
+            while(toDelete >= minMeasures && newMeasures[toDelete].notes.length === 0 && newMeasures[toDelete - 1].notes.length === 0) {
+                newMeasures.pop();
+                toDelete -= 1;
             }
 
 
