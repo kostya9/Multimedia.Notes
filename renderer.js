@@ -23,7 +23,27 @@ const ipcMiddleware = store => next => action => {
     return next(action);
 };
 
-const store = new createStore(projectReducer, applyMiddleware(ipcMiddleware));
+
+import Tone from 'tone';
+import { ADD_NOTE } from './actions/project';
+//create a synth and connect it to the master output (your speakers)
+var synth = new Tone.Synth().toMaster();
+
+function play(value, length) {
+    synth.triggerAttackRelease(value, length);
+}
+//play a middle 'C' for the duration of an 8th note
+
+const musicMiddlware = store => next => action => {
+    if(action.type === ADD_NOTE) {
+        const {previewNote} = store.getState();
+        previewNote && play(previewNote.value, previewNote.length);
+    }
+
+    return next(action);
+}
+
+const store = new createStore(projectReducer, applyMiddleware(ipcMiddleware, musicMiddlware));
 
 var oldEmit = ipcRenderer.emit;
 ipcRenderer.emit = (e, s, d) => {
@@ -35,7 +55,6 @@ ipcRenderer.emit = (e, s, d) => {
 }
 
 ipcRenderer.on(IPC_WRITE_REQUEST, (e, d) => {
-    console.log(e);
     d.measures = store.getState().measures;
     store.dispatch(d);
 });

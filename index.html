@@ -10,6 +10,7 @@
 
   <script>
     // You can also require other files to run in this process
+    if(!location.href.endsWith('?react_perf')) { location.href += "?react_perf"}
     require('./renderer-bundle.js')
   </script>
   </body>

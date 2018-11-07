@@ -27,9 +27,6 @@ export const removeNote = (measureNumber, note, position) => ({
     position: position // From 0 to 1
 });
 
-export const addNote = (measureNumber, note, position) => ({
-    type: ADD_NOTE,
-    measureNumber: measureNumber,
-    note: note,
-    position: position // From 0 to 1
+export const addNote = () => ({
+    type: ADD_NOTE
 });

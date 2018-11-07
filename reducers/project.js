@@ -52,19 +52,17 @@ export const projectReducer = (state = {}, action) => {
         }
         case ADD_NOTE:
         {
-            const {position, measureNumber, note} = action;
-            const length = state.chosenLength;
-            const adjustedPosition = adjustPosition(length, position);
-            const changedMeasure = state.measures.find(m => m.number === measureNumber);
-
-            if(findIntersection(changedMeasure.notes, adjustedPosition, note, length) != null) {
+            if(!state.previewNote) {
                 return state;
             }
-            
+
+            const measureNumber = state.previewNote.measureNumber;
+            const changedMeasure = state.measures[measureNumber];
+
             const newNote = {
-                value: note, 
-                position: adjustedPosition, 
-                length: length
+                value: state.previewNote.value, 
+                position: state.previewNote.position, 
+                length: state.previewNote.length
             };
             
             const newMeasure = {
@@ -117,15 +115,26 @@ export const projectReducer = (state = {}, action) => {
         }
         case PREVIEW_CHANGE:
         {
+            /*if(state.lastUpdatedPreview) {
+                var diff = new Date().getTime() - state.lastUpdatedPreview.getTime();
+
+                // too fast
+                if(diff < 40) {
+                    return state;
+                }
+            }*/
+
             const {position, measureNumber, note} = action;
             const length = state.chosenLength;
             
             if(!position) {
-                return {...state, previewNote: null};
+                return {...state, previewNote: null, lastUpdatedPreview: new Date()};
             }
 
+            
             const adjustedPosition = adjustPosition(length, position);
-            const changedMeasure = state.measures.find(m => m.number === measureNumber);
+            
+            const changedMeasure = state.measures[measureNumber];
 
             const noteIsSame = 
                 state.previewNote 
@@ -134,11 +143,13 @@ export const projectReducer = (state = {}, action) => {
                 && state.previewNote.measureNumber === measureNumber;
 
             if(noteIsSame) {
-                return state;
+                return {...state, lastUpdatedPreview: new Date()};
             }
 
-            if(findIntersection(changedMeasure.notes, adjustedPosition, note, length) != null) {
-                return {...state, previewNote: null};
+            
+            const inter = findIntersection(changedMeasure.notes, adjustedPosition, note, length);
+            if(inter != null) {
+                return {...state, previewNote: null, lastUpdatedPreview: new Date()};
             }
 
             const previewNote = {
@@ -147,8 +158,7 @@ export const projectReducer = (state = {}, action) => {
                 length: length,
                 measureNumber: measureNumber
             };
-
-            return {...state, previewNote}
+            return {...state, previewNote, lastUpdatedPreview: new Date()}
         }
         case CHOOSE_LENGTH:
         {

@@ -2,17 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SVG from 'react-inlinesvg';
 
-import Tone from 'tone';
 import { NotePropType } from '../../../propTypes/grandStaff';
 import { mapNoteLengthToSvg } from '../../../resources/noteLengthResourceMap';
-
-//create a synth and connect it to the master output (your speakers)
-var synth = new Tone.Synth().toMaster();
-
-function play(value, length) {
-    synth.triggerAttackRelease(value, length);
-}
-//play a middle 'C' for the duration of an 8th note
 
 export default class MeasureLine extends React.Component {
 
@@ -33,20 +24,15 @@ export default class MeasureLine extends React.Component {
     }
 
     onNoteClick(e) {
-        const {addNote, removeNote, value, previewNote} = this.props;
-        const {width, left} = this.state;
-        const mouseAdjustment = -10; /* Some mouse adjustment for visual accuracy */
-        const offset = (e.nativeEvent.clientX - left) + mouseAdjustment;
-        const position = offset / width;
+        const {addNote, removeNote, previewNote} = this.props;
 
         if (e.type === 'click') {
-            previewNote && play(value, previewNote.length); 
-            addNote(position);
+            addNote();
         } else if (e.type === 'contextmenu') {
             removeNote(position);
         }
     }
-    
+
     onMove(e) {
         const {previewChange} = this.props;
         const {width, left} = this.state;
