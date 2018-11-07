@@ -24,7 +24,7 @@ export default class MeasureLine extends React.Component {
     }
 
     onNoteClick(e) {
-        const {addNote, removeNote, previewNote} = this.props;
+        const {addNote, removeNote} = this.props;
 
         if (e.type === 'click') {
             addNote();
