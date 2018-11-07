@@ -115,14 +115,14 @@ export const projectReducer = (state = {}, action) => {
         }
         case PREVIEW_CHANGE:
         {
-            /*if(state.lastUpdatedPreview) {
+            if(state.lastUpdatedPreview) {
                 var diff = new Date().getTime() - state.lastUpdatedPreview.getTime();
 
                 // too fast
-                if(diff < 40) {
+                if(diff < 50) {
                     return state;
                 }
-            }*/
+            }
 
             const {position, measureNumber, note} = action;
             const length = state.chosenLength;

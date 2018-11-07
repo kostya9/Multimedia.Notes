@@ -5,8 +5,21 @@ import SVG from 'react-inlinesvg';
 import { NotePropType } from '../../../propTypes/grandStaff';
 import { mapNoteLengthToSvg } from '../../../resources/noteLengthResourceMap';
 
-export default class MeasureLine extends React.Component {
+import {connect} from 'react-redux';
+import { previewChange, addNote, removeNote } from '../../../../actions/project';
 
+const MeasureLineState = (initialState, ownProps) => state => ({
+    notes: state.measures[ownProps.measureNumber].notes,
+    previewNote: state.previewNote && state.previewNote.measureNumber === ownProps.measureNumber && state.previewNote.value === ownProps.value && state.previewNote
+})
+
+const MeasureLineActions = (dispatch, ownProps) => ({
+    addNote: () => dispatch(addNote()),
+    removeNote: (position) => dispatch(removeNote(ownProps.measureNumber, ownProps.value, position)),
+    previewChange: (position) => dispatch(previewChange(ownProps.measureNumber, ownProps.value, position)),
+})
+
+class MeasureLine extends React.Component {
     refCallback(element) {
         if (element) {
             const {width, left} = element.getBoundingClientRect();
@@ -29,6 +42,10 @@ export default class MeasureLine extends React.Component {
         if (e.type === 'click') {
             addNote();
         } else if (e.type === 'contextmenu') {
+            const {width, left} = this.state;
+            const mouseAdjustment = -10; /* Some mouse adjustment for visual accuracy */
+            const offset = (e.nativeEvent.clientX - left) + mouseAdjustment;
+            const position = offset / width;
             removeNote(position);
         }
     }
@@ -52,12 +69,10 @@ export default class MeasureLine extends React.Component {
                     onContextMenu={this.onNoteClick.bind(this)}
                     onMouseMove={this.onMove.bind(this)}>
             <div className={classInner}>
-            {this.props.notes.map((n, i) => this.renderNote(n, i, false))}
+            {this.props.notes.filter(n => n.value === this.props.value).map((n, i) => this.renderNote(n, i, false))}
             {this.props.previewNote && this.renderNote(this.props.previewNote, -1, true)}
             </div>
         </div>);
-
-
     }
 }
 
@@ -67,3 +82,5 @@ MeasureLine.propTypes = {
     isSpace: PropTypes.bool.isRequired,
     addNote: PropTypes.func.isRequired
 };
+
+export default MeasureLine = connect(MeasureLineState, MeasureLineActions)(MeasureLine);
