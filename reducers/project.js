@@ -1,4 +1,5 @@
 import { INIT_PROJECT, ADD_NOTE, REMOVE_NOTE, CHOOSE_LENGTH, PREVIEW_CHANGE } from "../actions/project";
+import { IPC_READ_RESPONSE, IPC_READ_REQUEST } from "../actions/ipcActions"
 import { range, stepRange } from "../utils/range";
 import { nearest } from "../utils/nearest";
 
@@ -36,6 +37,17 @@ export const projectReducer = (state = {}, action) => {
             return {
                 measures,
                 chosenLength: '4n'
+            }
+        }
+        case IPC_READ_RESPONSE: {
+            return {
+                measures: action.measures,
+                chosenLength: '4n'
+            }
+        }
+        case IPC_READ_REQUEST: {
+            return {
+                measures: null
             }
         }
         case ADD_NOTE:

@@ -2,11 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux';
 
-import SVG from 'react-inlinesvg';
-
 import Measure from './Measure/Measure'
 import './GrandStaff.scss';
-import range from '../../../utils/range';
 import { MeasurePropType } from '../../propTypes/grandStaff';
 import { addNote, removeNote, previewChange } from '../../../actions/project';
 
