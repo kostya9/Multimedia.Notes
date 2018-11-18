@@ -6,6 +6,7 @@ import Measure from './Measure/Measure'
 import './GrandStaff.scss';
 import { MeasurePropType } from '../../propTypes/grandStaff';
 import { previewChange } from '../../../actions/project';
+import { Cleff } from './Cleff';
 
 const GrandStaffState = (state) => ({
     measures: state.measures
@@ -21,12 +22,20 @@ class GrandStaff extends React.Component {
         previewChange(null, null, null);
     }
 
+    getMeasure(m) {
+        if(m.number % 2 == 0) {
+            return (<span className="newline" key={'s' + m.number}><Cleff key={'c' + m.number} /> <Measure key={m.number} 
+                number={m.number} /></span>)
+        }
+
+        return (<Measure key={m.number} 
+            number={m.number} />);
+    }
+
     render() {
         const {measures} = this.props;
         return <div onMouseLeave={this.onMouseLeave.bind(this)}>
-                {measures.map(m => 
-                    <Measure key={m.number} 
-                             number={m.number} />)}
+                {measures.map(this.getMeasure)}
             </div>
     }
 }

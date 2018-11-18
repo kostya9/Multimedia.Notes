@@ -1,0 +1,29 @@
+.cleff {
+    position: relative;
+    svg {
+        position: absolute;
+    }
+}
+
+.cleff.bass {
+    top: 10px;
+    svg {
+        height: 60px;
+    }
+}
+
+.cleff.treble {
+    top: 7px;
+    svg {
+        height: 140px;
+    }
+}
+
+.cleff-measure {
+    width: 100px;
+}
+
+span.newline {
+    display:inline-block;
+    *display:inline; *zoom:1;
+}

@@ -64,17 +64,14 @@ export const projectReducer = (state = {}, action) => {
                 position: state.previewNote.position, 
                 length: state.previewNote.length
             };
-            
-            const newMeasure = {
-                number: changedMeasure.number,
-                notes: [...changedMeasure.notes, newNote]
-            }
 
-            const newMeasures = state.measures.map(m => m.number === measureNumber ? newMeasure : m);
+            changedMeasure.notes = [... changedMeasure.notes, newNote];
+
+            let newMeasures = state.measures;
 
             // If a note was added at last measure - add a measure
             if(measureNumber === newMeasures.length - 1) {
-                newMeasures.push({number: measureNumber + 1, notes: []});
+                newMeasures = [...newMeasures, {number: measureNumber + 1, notes: []}];
             }
 
             return {
@@ -95,14 +92,13 @@ export const projectReducer = (state = {}, action) => {
                 return state;
             }
 
-            const newMeasure = {...changedMeasure, notes: changedMeasure.notes.filter(n => n !== toRemove)};
-            const newMeasures = state.measures.map(m => m.number === measureNumber ? newMeasure : m);
-
+            changedMeasure.notes = changedMeasure.notes.filter(n => n !== toRemove);
+            let newMeasures = state.measures;
 
             // Remove measures that have no notes beside them starting from the end
             let toDelete = newMeasures.length - 1;
             while(toDelete >= minMeasures && newMeasures[toDelete].notes.length === 0 && newMeasures[toDelete - 1].notes.length === 0) {
-                newMeasures.pop();
+                newMeasures = [...newMeasures.filter((m, i) => i !== toDelete)];
                 toDelete -= 1;
             }
 
