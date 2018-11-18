@@ -145,10 +145,8 @@ export const projectReducer = (state = {}, action) => {
             if(noteIsSame) {
                 return {...state, lastUpdatedPreview: new Date()};
             }
-
             
-            const inter = findIntersection(changedMeasure.notes, adjustedPosition, note, length);
-            if(inter != null) {
+            if(findIntersection(changedMeasure.notes, adjustedPosition, note, length) != null) {
                 return {...state, previewNote: null, lastUpdatedPreview: new Date()};
             }
 

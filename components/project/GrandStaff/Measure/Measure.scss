@@ -54,7 +54,16 @@ $line-height: 1px;
 }
 
 .note-measure-inner {
-    width: $measure-width;
+    width: $measure-width + 5px;
+    display: inline-block;
+}
+
+.note-measure {
+    display: inline-block;
+    margin-bottom: 3 * $row-height;
+}
+
+.note-staff {
     display: inline-block;
 }
 
