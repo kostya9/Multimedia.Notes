@@ -27,7 +27,7 @@ const adjustPosition = (length, position) => {
     return nearest(noteRange, position);
 }
 
-const minMeasures = 5;
+const minMeasures = 4;
 
 export const projectReducer = (state = {}, action) => {
     switch(action.type) {
