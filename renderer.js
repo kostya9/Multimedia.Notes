@@ -38,9 +38,13 @@ function play(value, length) {
 const musicMiddlware = store => next => action => {
     var nextResult = next(action);
 
-    var {noteToPlay} = store.getState();
-    if(noteToPlay) {
-        play(noteToPlay.value, noteToPlay.length);
+    var {notesToPlay} = store.getState();
+
+    if(notesToPlay && notesToPlay.length > 0) {
+        for(var n of notesToPlay) {
+            play(n.value, n.length);
+        }
+
         store.dispatch(playNote());
     }
 

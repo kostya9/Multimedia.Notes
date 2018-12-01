@@ -79,7 +79,7 @@ export const projectReducer = (state = {}, action) => {
                 ...state,
                 previewNote: null,
                 measures: newMeasures,
-                noteToPlay: newNote
+                notesToPlay: [newNote]
             }
         }
         case REMOVE_NOTE:
