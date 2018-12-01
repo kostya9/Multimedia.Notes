@@ -11,21 +11,18 @@ export function playReducer(state, action) {
         case PLAY_STARTED: {
             let {playState} = state;
 
+            // -1/8 so that the next metronome beat the first notes will be played
             if(!playState) {
                 playState = {
-                    position: 0
+                    position: - 1/8
                 }
             }
-
-            const {position} = playState;
-            const measureNumber = Math.floor(position);
-            const notesToPlay = state.measures[measureNumber].filter(n => n.position === position);
 
             return {
                 ...state,
                 playing: true,
                 playState,
-                notesToPlay
+                previewNote: null
             }
         }
         case PLAY_STOPPED: {
@@ -35,10 +32,22 @@ export function playReducer(state, action) {
             }
         }
         case METRONOME_BEAT: {
+            if(!state.playing) {
+                return state;
+            }
+
             const beatValue = 1 / 8;
             const newPosition = state.playState.position += beatValue;
-
             const measureNumber = Math.floor(newPosition);
+
+            // The end of the song
+            if(measureNumber >= state.measures.length) {
+                return {
+                    ...state,
+                    playing: false
+                }
+            }
+
             const notesToPlay = state.measures[measureNumber].filter(n => n.position === newPosition);
 
             return {
