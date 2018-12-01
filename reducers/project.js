@@ -2,7 +2,7 @@ import { INIT_PROJECT, ADD_NOTE, REMOVE_NOTE, CHOOSE_LENGTH, PREVIEW_CHANGE } fr
 import { IPC_READ_RESPONSE, IPC_READ_REQUEST } from "../actions/ipcActions"
 import { range, stepRange } from "../utils/range";
 import { nearest } from "../utils/nearest";
-import { NOTE_PLAYED } from "../actions/play";
+import { playReducer } from "./play";
 
 const parseLength = (length) => {
     return 1 / +length[0];
@@ -49,12 +49,6 @@ export const projectReducer = (state = {}, action) => {
         case IPC_READ_REQUEST: {
             return {
                 measures: null
-            }
-        }
-        case NOTE_PLAYED: {
-            return {
-                ...state,
-                noteToPlay: null
             }
         }
         case ADD_NOTE:
@@ -170,6 +164,6 @@ export const projectReducer = (state = {}, action) => {
             }
         }
         default:
-            return state;
+            return playReducer(state, action);
     }
 }
