@@ -2,6 +2,7 @@ import { INIT_PROJECT, ADD_NOTE, REMOVE_NOTE, CHOOSE_LENGTH, PREVIEW_CHANGE } fr
 import { IPC_READ_RESPONSE, IPC_READ_REQUEST } from "../actions/ipcActions"
 import { range, stepRange } from "../utils/range";
 import { nearest } from "../utils/nearest";
+import { NOTE_PLAYED } from "../actions/play";
 
 const parseLength = (length) => {
     return 1 / +length[0];
@@ -50,6 +51,12 @@ export const projectReducer = (state = {}, action) => {
                 measures: null
             }
         }
+        case NOTE_PLAYED: {
+            return {
+                ...state,
+                noteToPlay: null
+            }
+        }
         case ADD_NOTE:
         {
             if(!state.previewNote) {
@@ -77,14 +84,15 @@ export const projectReducer = (state = {}, action) => {
             return {
                 ...state,
                 previewNote: null,
-                measures: newMeasures
+                measures: newMeasures,
+                noteToPlay: newNote
             }
         }
         case REMOVE_NOTE:
         {
             const {position, measureNumber, note} = action;
             const length = state.chosenLength;
-            const changedMeasure = state.measures.find(m => m.number === measureNumber);
+            const changedMeasure = state.measures[measureNumber];
             const adjustedPosition = adjustPosition(length, position);
             const toRemove = findIntersection(changedMeasure.notes, adjustedPosition, note, length);
 

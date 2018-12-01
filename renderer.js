@@ -26,6 +26,7 @@ const ipcMiddleware = store => next => action => {
 
 import Tone from 'tone';
 import { ADD_NOTE } from './actions/project';
+import { playNote } from './actions/play';
 //create a synth and connect it to the master output (your speakers)
 var synth = new Tone.Synth().toMaster();
 
@@ -35,12 +36,15 @@ function play(value, length) {
 //play a middle 'C' for the duration of an 8th note
 
 const musicMiddlware = store => next => action => {
-    if(action.type === ADD_NOTE) {
-        const {previewNote} = store.getState();
-        previewNote && play(previewNote.value, previewNote.length);
+    var nextResult = next(action);
+
+    var {noteToPlay} = store.getState();
+    if(noteToPlay) {
+        play(noteToPlay.value, noteToPlay.length);
+        store.dispatch(playNote());
     }
 
-    return next(action);
+    return nextResult;
 }
 
 const store = new createStore(projectReducer, applyMiddleware(ipcMiddleware, musicMiddlware));
