@@ -101,7 +101,8 @@ ipcMain.on(IPC_READ_REQUEST, (event, arg) => {
              return 
           } 
           
-          event.sender.send(IPC_READ_RESPONSE, {measures: JSON.parse(data), type: IPC_READ_RESPONSE}) 
+          const parsed = JSON.parse(data);
+          event.sender.send(IPC_READ_RESPONSE, {measures: parsed.measures, timeSignature: parsed.timeSignature, type: IPC_READ_RESPONSE}) 
        })
     } 
 });
@@ -109,7 +110,7 @@ ipcMain.on(IPC_READ_REQUEST, (event, arg) => {
 ipcMain.on(IPC_WRITE_REQUEST, (e, d) => {
     if(d && d.measures) {
         dialog.showSaveDialog(mainWindow, (f) => {
-            fs.writeFile(f, JSON.stringify(d.measures), () => {
+            fs.writeFile(f, JSON.stringify({timeSignature: d.timeSignature, measures: d.measures}), () => {
                 console.log("State saved");
             });
         })

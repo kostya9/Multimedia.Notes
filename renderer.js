@@ -56,7 +56,8 @@ ipcRenderer.emit = (e, s, d) => {
 }
 
 ipcRenderer.on(IPC_WRITE_REQUEST, (e, d) => {
-    d.measures = store.getState().measures;
+    const {measures, timeSignature} = store.getState();
+    d = {...d, measures, timeSignature};
     store.dispatch(d);
 });
 

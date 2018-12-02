@@ -13,16 +13,18 @@ module.exports = {
             type: IPC_READ_REQUEST
         }
     },
-    readFileResponse: function(measures) {
+    readFileResponse: function(measures, timeSignature) {
         return {
             type: IPC_READ_RESPONSE,
-            measures: measures
+            measures,
+            timeSignature
         }
     },
-    writeFileRequest: function(measures) {
+    writeFileRequest: function(measures, timeSignature) {
         return {
             type: IPC_WRITE_REQUEST,
-            measures: measures
+            measures,
+            timeSignature
         }
     }
 }

@@ -8,11 +8,11 @@ const parseLength = (length) => {
     return 1 / +length[0];
 }
 
-const findIntersection = (notes, position, value, length) => {
-    const numericLength = parseLength(length);
+const findIntersection = (notes, position, value, length, max) => {
+    const numericLength = parseLength(length) / max;
 
     const isIntersectingWith = (n) => {
-        const nNumericLength = parseLength(n.length);
+        const nNumericLength = parseLength(n.length) / max;
         return (position >= (n.position) && position < (n.position + nNumericLength))
             || (n.position >= position && n.position < (position + numericLength));
     }
@@ -22,10 +22,16 @@ const findIntersection = (notes, position, value, length) => {
         .find(n => isIntersectingWith(n));
 }
 
-const adjustPosition = (length, position) => {
-    const numericLength = parseLength(length);
-    const noteRange = stepRange(0, 1 - numericLength, 1/8); // 1/8 - min step
-    return nearest(noteRange, position);
+const adjustPosition = (length, position, max) => {
+    const numericLength = parseLength(length) / max;
+    const noteRange = stepRange(0, 1 - numericLength, 1/8 / max); // 1/8 - min step
+
+    const foundNearest = nearest(noteRange, position);
+    if(foundNearest + numericLength > 1) {
+        return null;
+    }
+
+    return foundNearest;
 }
 
 const minMeasures = 4;
@@ -38,14 +44,16 @@ export const projectReducer = (state = {}, action) => {
             return {
                 measures,
                 chosenLength: '4n',
-                mode: 'edit'
+                mode: 'edit',
+                timeSignature: 3/4
             }
         }
         case IPC_READ_RESPONSE: {
             return {
                 measures: action.measures,
                 chosenLength: '4n',
-                mode: 'edit'
+                mode: 'edit',
+                timeSignature: action.timeSignature
             }
         }
         case IPC_READ_REQUEST: {
@@ -95,8 +103,8 @@ export const projectReducer = (state = {}, action) => {
             const {position, measureNumber, note} = action;
             const length = state.chosenLength;
             const changedMeasure = state.measures[measureNumber];
-            const adjustedPosition = adjustPosition(length, position);
-            const toRemove = findIntersection(changedMeasure.notes, adjustedPosition, note, length);
+            const adjustedPosition = adjustPosition(length, position, 1); // remove to work anyways
+            const toRemove = findIntersection(changedMeasure.notes, adjustedPosition, note, length, 1);
 
             if (toRemove == null) {
                 return state;
@@ -137,8 +145,11 @@ export const projectReducer = (state = {}, action) => {
                 return {...state, previewNote: null, lastUpdatedPreview: new Date()};
             }
 
-            
-            const adjustedPosition = adjustPosition(length, position);
+            const timeSignature = state.timeSignature;
+            const adjustedPosition = adjustPosition(length, position, timeSignature);
+
+            if(adjustedPosition === null)
+                return {...state, lastUpdatedPreview: new Date()};
             
             const changedMeasure = state.measures[measureNumber];
 
@@ -152,7 +163,7 @@ export const projectReducer = (state = {}, action) => {
                 return {...state, lastUpdatedPreview: new Date()};
             }
             
-            if(findIntersection(changedMeasure.notes, adjustedPosition, note, length) != null) {
+            if(findIntersection(changedMeasure.notes, adjustedPosition, note, length, timeSignature) != null) {
                 return {...state, previewNote: null, lastUpdatedPreview: new Date()};
             }
 

@@ -9,13 +9,12 @@ export function playReducer(state, action) {
             }
         }
         case PLAY_STARTED: {
-            console.log(1);
             let {playState} = state;
 
             // -1/8 so that on the next metronome beat the first notes will be played
             if(!playState) {
                 playState = {
-                    position: - 1/8,
+                    position: -  1/8 /state.timeSignature,
                 }
             }
 
@@ -38,17 +37,19 @@ export function playReducer(state, action) {
             }
         }
         case METRONOME_BEAT: {
-            const {playState, mode} = state;
+            const {playState, mode, timeSignature} = state;
             if(mode != 'play' || !playState || !playState.playing) {
                 return state;
             }
 
-            const beatValue = 1 / 8;
-            const newPosition = playState.position += beatValue;
-            const measureNumber = Math.floor(newPosition);
+            const precision = 0.01;
+            const beatValue = 1/8 / timeSignature;
+
+            let newPosition = playState.position += beatValue;
+            let measureNumber = Math.floor(newPosition + precision);
+
             const measurePosition = newPosition - measureNumber;
-            console.log(measureNumber);
-            console.log('measures', state.measures.length);
+            console.log(measurePosition)
 
             // The end of the song
             if(measureNumber >= state.measures.length) {
@@ -56,13 +57,14 @@ export function playReducer(state, action) {
                     ...state,
                     playState: {
                         ...playState,
-                        position: -1/8,
+                        position: - 1/8 / timeSignature,
                         playing: false
                     }
                 }
             }
 
-            const notesToPlay = state.measures[measureNumber].notes.filter(n => n.position === measurePosition);
+            const equalsPrecision = (p) => Math.abs(p - measurePosition) < precision;
+            const notesToPlay = state.measures[measureNumber].notes.filter(n => equalsPrecision(n.position));
 
             console.log(notesToPlay);
 
