@@ -36,7 +36,7 @@ class MeasureLine extends React.Component {
         const width = svg.size + 'px';
 
         let className = 'note-staff-img';
-        if(n.isActive) {
+        if(n.isActive && this.props.mode === 'play') {
             className += ' is-active';
         }
 

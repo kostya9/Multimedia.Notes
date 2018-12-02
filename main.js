@@ -27,7 +27,7 @@ const fs = require('fs');
 function createWindow () {
   // Create the browser window.
     mainWindow = new BrowserWindow({
-        minWidth: 1200, minHeight: 800, width: 1200, height: 800, webPreferences: {
+        minWidth: 1300, minHeight: 800, width: 1300, height: 800, webPreferences: {
             experimentalFeatures: true
         }
     })

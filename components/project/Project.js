@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import Split from 'grommet/components/Split';
 import Box from 'grommet/components/Box';
 import Sidebar from 'grommet/components/Sidebar';
+import Header from 'grommet/components/Header';
 import App from 'grommet/components/App';
 import Button from 'grommet/components/Button';
 
@@ -40,19 +41,19 @@ class Project extends React.Component {
     }
 
     render() {
-
-        const buttonText = this.isPlay() ? 'Edit' : 'Play';
-
-
-
         return (
             <App>
+                    {this.isPlay() && <Header size='small' fixed={true}>
+                            <Button onClick={this.toggleMode.bind(this)} label='Edit'/>
+                            <PlayMenu />
+                    </Header>}
                 <Split separator={true} flex='right' priority={'right'}>
-                    <Sidebar size='small'>
-                        <Button><Link to="/">Home</Link></Button>
-                        <Button onClick={this.toggleMode.bind(this)}>{buttonText}</Button>
-                        { !this.isPlay() ? <NoteMenu /> : <PlayMenu />}
-                    </Sidebar>
+
+                    {!this.isPlay() && <Sidebar size='small'>
+                            <Button path='/' label='Home'/>
+                            <NoteMenu />
+                            <Button onClick={this.toggleMode.bind(this)} label='Play' />
+                    </Sidebar>}
                     <Box>
                         <GrandStaff />
                     </Box>

@@ -42,7 +42,13 @@ export function playTonejsNote(value, length) {
 }
 //play a middle 'C' for the duration of an 8th note
 
-Tone.Transport.bpm.value = 80;
+
+
+export function setBpm(bpm) {
+    Tone.Transport.pause();
+    Tone.Transport.bpm.value = bpm;
+    Tone.Transport.start();
+}
 
 export function setTimeCallback(callback, length) {
     Tone.Transport.scheduleRepeat(() => callback(), length);

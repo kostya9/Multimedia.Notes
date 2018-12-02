@@ -9,7 +9,8 @@ import { previewChange } from '../../../actions/project';
 import { Cleff } from './Cleff';
 
 const GrandStaffState = (state) => ({
-    measures: state.measures
+    measures: state.measures,
+    mode: state.mode
 })
 
 const GrandStaffActions = (dispatch) => ({
@@ -23,7 +24,8 @@ class GrandStaff extends React.Component {
     }
 
     getMeasure(m) {
-        if(m.number % 2 == 0) {
+        const times = this.props.mode === 'play' ? 3 : 2;
+        if(m.number % times == 0) {
             return (<span className="newline" key={'s' + m.number}><Cleff key={'c' + m.number} /> <Measure key={m.number} 
                 number={m.number} /></span>)
         }
@@ -35,7 +37,7 @@ class GrandStaff extends React.Component {
     render() {
         const {measures} = this.props;
         return <div onMouseLeave={this.onMouseLeave.bind(this)}>
-                {measures.map(this.getMeasure)}
+                {measures.map(this.getMeasure.bind(this))}
             </div>
     }
 }
