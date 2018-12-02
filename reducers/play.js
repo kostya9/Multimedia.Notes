@@ -1,7 +1,8 @@
-import { NOTE_PLAYED, PLAY_STARTED, PLAY_STOPPED, METRONOME_BEAT } from "../actions/play";
-import { parseLength } from "./notesMath";
+import { NOTE_PLAYED, PLAY_STARTED, PLAY_STOPPED, METRONOME_BEAT, SET_POSITION } from "../actions/play";
+import { parseLength, adjustPosition } from "./notesMath";
 
 export function playReducer(state, action) {
+    const precision = 0.001;
     switch(action.type) {
         case NOTE_PLAYED: {
             return {
@@ -15,7 +16,7 @@ export function playReducer(state, action) {
             // -1/8 so that on the next metronome beat the first notes will be played
             if(!playState) {
                 playState = {
-                    position: -  1/8 /state.timeSignature,
+                    position: 0,
                 }
             }
 
@@ -37,19 +38,36 @@ export function playReducer(state, action) {
                 }
             }
         }
+        case SET_POSITION: {
+            const {position} = action;
+            console.log(position);
+            const multiplied = position * state.measures.length;
+            const measureNumber = Math.floor(multiplied);
+            const measurePosition = multiplied - measureNumber;
+            const adjustedMeasurePosition = adjustPosition('8n', measurePosition, state.timeSignature);
+            const realPosition = measureNumber + adjustedMeasurePosition;
+
+
+            const prevMeasure = Math.floor(state.playState.position);
+            state.measures[prevMeasure].notes =  state.measures[prevMeasure].notes.map(n => ({...n, isActive: false}));
+
+            return {
+                ...state,
+                playState: {
+                    ...state.playState,
+                    position: realPosition
+                }
+            }
+        }
         case METRONOME_BEAT: {
             const {playState, mode, timeSignature} = state;
             if(mode != 'play' || !playState || !playState.playing) {
                 return state;
             }
 
-            const precision = 0.001;
-            const beatValue = 1/8 / timeSignature;
-
-            let newPosition = playState.position += beatValue;
-            let measureNumber = Math.floor(newPosition + precision);
-
-            const measurePosition = newPosition - measureNumber;
+            const {position} = state.playState;
+            const measureNumber = Math.floor(position + precision);
+            const measurePosition = position - measureNumber;
 
             // The end of the song
             if(measureNumber >= state.measures.length) {
@@ -57,7 +75,7 @@ export function playReducer(state, action) {
                     ...state,
                     playState: {
                         ...playState,
-                        position: - 1/8 / timeSignature,
+                        position: 0,
                         playing: false
                     }
                 }
@@ -84,6 +102,9 @@ export function playReducer(state, action) {
 
             const equalsPrecision = (p) => Math.abs(p - measurePosition) < precision;
             const notesToPlay = state.measures[measureNumber].notes.filter(n => equalsPrecision(n.position));
+
+            const beatValue = 1/8 / timeSignature;
+            const newPosition = playState.position + beatValue;
 
             return {
                 ...state,
