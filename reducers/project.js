@@ -1,38 +1,8 @@
 import { INIT_PROJECT, ADD_NOTE, REMOVE_NOTE, CHOOSE_LENGTH, PREVIEW_CHANGE, EDIT_MODE_ENTERED, PLAY_MODE_ENTERED } from "../actions/project";
 import { IPC_READ_RESPONSE, IPC_READ_REQUEST } from "../actions/ipcActions"
-import { range, stepRange } from "../utils/range";
-import { nearest } from "../utils/nearest";
+import { range } from "../utils/range";
+import {adjustPosition, findIntersection} from './notesMath';
 import { playReducer } from "./play";
-
-const parseLength = (length) => {
-    return 1 / +length[0];
-}
-
-const findIntersection = (notes, position, value, length, max) => {
-    const numericLength = parseLength(length) / max;
-
-    const isIntersectingWith = (n) => {
-        const nNumericLength = parseLength(n.length) / max;
-        return (position >= (n.position) && position < (n.position + nNumericLength))
-            || (n.position >= position && n.position < (position + numericLength));
-    }
-
-    return notes
-        .filter(n => n.value === value)
-        .find(n => isIntersectingWith(n));
-}
-
-const adjustPosition = (length, position, max) => {
-    const numericLength = parseLength(length) / max;
-    const noteRange = stepRange(0, 1 - numericLength, 1/8 / max); // 1/8 - min step
-
-    const foundNearest = nearest(noteRange, position);
-    if(foundNearest + numericLength > 1) {
-        return null;
-    }
-
-    return foundNearest;
-}
 
 const minMeasures = 4;
 

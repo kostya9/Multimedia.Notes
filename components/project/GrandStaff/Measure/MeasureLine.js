@@ -34,7 +34,13 @@ class MeasureLine extends React.Component {
         const left = n.position * 100 + '%';
         const svg = mapNoteLengthToSvg(n.length);
         const width = svg.size + 'px';
-        return <SVG src={svg.src} className='note-staff-img' style={{left: left, opacity: isPreview ? 0.5 : 1, width: width}} key={i}/>
+
+        let className = 'note-staff-img';
+        if(n.isActive) {
+            className += ' is-active';
+        }
+
+        return <SVG src={svg.src} className={className} style={{left: left, opacity: isPreview ? 0.5 : 1, width: width}} key={i}/>
     }
 
     onNoteClick(e) {
