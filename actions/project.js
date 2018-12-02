@@ -4,8 +4,19 @@ export const REMOVE_NOTE = 'REMOVE_NOTE';
 export const CHOOSE_LENGTH = 'CHOOSE_LENGTH';
 export const PREVIEW_CHANGE = 'PREVIEW_CHANGE';
 
+export const PLAY_MODE_ENTERED = 'PLAY_MODE_ENTERED';
+export const EDIT_MODE_ENTERED = 'EDIT_MODE_ENTERED';
+
 export const init = () => ({
     type: INIT_PROJECT
+});
+
+export const playMode = () => ({
+    type: PLAY_MODE_ENTERED
+});
+
+export const editMode = () => ({
+    type: EDIT_MODE_ENTERED
 });
 
 export const chooseLength = (length = '8n') => ({

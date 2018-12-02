@@ -1,4 +1,4 @@
-import { INIT_PROJECT, ADD_NOTE, REMOVE_NOTE, CHOOSE_LENGTH, PREVIEW_CHANGE } from "../actions/project";
+import { INIT_PROJECT, ADD_NOTE, REMOVE_NOTE, CHOOSE_LENGTH, PREVIEW_CHANGE, EDIT_MODE_ENTERED, PLAY_MODE_ENTERED } from "../actions/project";
 import { IPC_READ_RESPONSE, IPC_READ_REQUEST } from "../actions/ipcActions"
 import { range, stepRange } from "../utils/range";
 import { nearest } from "../utils/nearest";
@@ -37,19 +37,27 @@ export const projectReducer = (state = {}, action) => {
             let measures = range(0, minMeasures).map(r => ({number: r, notes: []}));
             return {
                 measures,
-                chosenLength: '4n'
+                chosenLength: '4n',
+                mode: 'edit'
             }
         }
         case IPC_READ_RESPONSE: {
             return {
                 measures: action.measures,
-                chosenLength: '4n'
+                chosenLength: '4n',
+                mode: 'edit'
             }
         }
         case IPC_READ_REQUEST: {
             return {
                 measures: null
             }
+        }
+        case EDIT_MODE_ENTERED: {
+            return {...state, mode: 'edit'}
+        }
+        case PLAY_MODE_ENTERED: {
+            return {...state, mode: 'play', previewNote: null}
         }
         case ADD_NOTE:
         {

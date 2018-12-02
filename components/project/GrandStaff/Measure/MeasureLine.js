@@ -10,7 +10,8 @@ import { previewChange, addNote, removeNote } from '../../../../actions/project'
 
 const MeasureLineState = (initialState, ownProps) => state => ({
     notes: state.measures[ownProps.measureNumber].notes,
-    previewNote: state.previewNote && state.previewNote.measureNumber === ownProps.measureNumber && state.previewNote.value === ownProps.value && state.previewNote
+    previewNote: state.previewNote && state.previewNote.measureNumber === ownProps.measureNumber && state.previewNote.value === ownProps.value && state.previewNote,
+    mode: state.mode
 })
 
 const MeasureLineActions = (dispatch, ownProps) => ({
@@ -37,6 +38,9 @@ class MeasureLine extends React.Component {
     }
 
     onNoteClick(e) {
+        if(this.props.mode !== 'edit')
+            return;
+
         const {addNote, removeNote} = this.props;
 
         if (e.type === 'click') {
@@ -51,6 +55,9 @@ class MeasureLine extends React.Component {
     }
 
     onMove(e) {
+        if(this.props.mode !== 'edit')
+            return;
+
         const {previewChange} = this.props;
         const {width, left} = this.state;
         const mouseAdjustment = -10; /* Some mouse adjustment for visual accuracy */

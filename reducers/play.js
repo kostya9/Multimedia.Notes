@@ -9,46 +9,62 @@ export function playReducer(state, action) {
             }
         }
         case PLAY_STARTED: {
+            console.log(1);
             let {playState} = state;
 
-            // -1/8 so that the next metronome beat the first notes will be played
+            // -1/8 so that on the next metronome beat the first notes will be played
             if(!playState) {
                 playState = {
-                    position: - 1/8
+                    position: - 1/8,
                 }
             }
 
             return {
                 ...state,
-                playing: true,
-                playState,
+                playState: {
+                    ...playState, 
+                    playing: true
+                },
                 previewNote: null
             }
         }
         case PLAY_STOPPED: {
             return {
                 ...state,
-                playing: false
+                playState: {
+                    ...state.playState,
+                    playing: false
+                }
             }
         }
         case METRONOME_BEAT: {
-            if(!state.playing) {
+            const {playState, mode} = state;
+            if(mode != 'play' || !playState || !playState.playing) {
                 return state;
             }
 
             const beatValue = 1 / 8;
-            const newPosition = state.playState.position += beatValue;
+            const newPosition = playState.position += beatValue;
             const measureNumber = Math.floor(newPosition);
+            const measurePosition = newPosition - measureNumber;
+            console.log(measureNumber);
+            console.log('measures', state.measures.length);
 
             // The end of the song
             if(measureNumber >= state.measures.length) {
                 return {
                     ...state,
-                    playing: false
+                    playState: {
+                        ...playState,
+                        position: -1/8,
+                        playing: false
+                    }
                 }
             }
 
-            const notesToPlay = state.measures[measureNumber].filter(n => n.position === newPosition);
+            const notesToPlay = state.measures[measureNumber].notes.filter(n => n.position === measurePosition);
+
+            console.log(notesToPlay);
 
             return {
                 ...state,
