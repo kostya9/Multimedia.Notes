@@ -13,7 +13,6 @@ export function playReducer(state, action) {
         case PLAY_STARTED: {
             let {playState} = state;
 
-            // -1/8 so that on the next metronome beat the first notes will be played
             if(!playState) {
                 playState = {
                     position: 0,
@@ -40,7 +39,6 @@ export function playReducer(state, action) {
         }
         case SET_POSITION: {
             const {position} = action;
-            console.log(position);
             const multiplied = position * state.measures.length;
             const measureNumber = Math.floor(multiplied);
             const measurePosition = multiplied - measureNumber;

@@ -24,7 +24,7 @@ class PlayMenu extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {bpm: 80, position: 0};
+        this.state = {bpm: 80 };
         setBpm(this.state.bpm);
     }
 
@@ -57,7 +57,7 @@ class PlayMenu extends React.Component {
         const position = this.props.position;
         return <Box direction='row' justify='between' full='horizontal'>
             <FormField size='large' label='Song position'><input type='range' min={0} max={1} step={0.01} value={position} onChange={this.positionChange.bind(this)}></input></FormField>
-            <FormField className='bpm-input' label={'bpm: ' + bpm}><NumberInput min={60} max={250} step={10} value={bpm} onChange={this.bpmChange.bind(this)}></NumberInput></FormField>
+            <FormField className='bpm-input' label={'bpm: ' + bpm}><NumberInput min={60} max={300} step={20} value={bpm} onChange={this.bpmChange.bind(this)}></NumberInput></FormField>
             <Button onClick={this.togglePlaying.bind(this)} label={text} />
             </Box>
     }

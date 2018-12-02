@@ -15,7 +15,11 @@ export const projectReducer = (state = {}, action) => {
                 measures,
                 chosenLength: '4n',
                 mode: 'edit',
-                timeSignature: 3/4
+                timeSignature: 3/4,
+                playState: {
+                    position: 0,
+                    playing: false
+                }
             }
         }
         case IPC_READ_RESPONSE: {
@@ -23,7 +27,11 @@ export const projectReducer = (state = {}, action) => {
                 measures: action.measures,
                 chosenLength: '4n',
                 mode: 'edit',
-                timeSignature: action.timeSignature
+                timeSignature: action.timeSignature,
+                playState: {
+                    position: 0,
+                    playing: false
+                }
             }
         }
         case IPC_READ_REQUEST: {
