@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import SVG from 'react-inlinesvg';
 
 import { NotePropType } from '../../../propTypes/grandStaff';
-import { mapNoteLengthToSvg } from '../../../resources/noteLengthResourceMap';
+import { mapNoteToSvg } from '../../../resources/noteLengthResourceMap';
 
 import {connect} from 'react-redux';
 import { previewChange, addNote, removeNote } from '../../../../actions/project';
+import { isInLine } from '../../../../reducers/notesMath';
 
 const MeasureLineState = (initialState, ownProps) => state => ({
     notes: state.measures[ownProps.measureNumber].notes,
@@ -32,7 +33,7 @@ class MeasureLine extends React.Component {
 
     renderNote(n, i, isPreview = false) {
         const left = n.position * 100 + '%';
-        const svg = mapNoteLengthToSvg(n.length);
+        const svg = mapNoteToSvg(n.length, n.value);
         const width = svg.size + 'px';
 
         let className = 'note-staff-img';
@@ -40,7 +41,7 @@ class MeasureLine extends React.Component {
             className += ' is-active';
         }
 
-        return <SVG src={svg.src} className={className} style={{left: left, opacity: isPreview ? 0.5 : 1, width: width}} key={i}/>
+        return <SVG src={svg.src} className={className} style={{left: left, opacity: isPreview ? 0.5 : 1, width: width}}/>
     }
 
     onNoteClick(e) {
@@ -82,8 +83,8 @@ class MeasureLine extends React.Component {
                     onContextMenu={this.onNoteClick.bind(this)}
                     onMouseMove={this.onMove.bind(this)}>
             <div className={classInner}>
-            {this.props.notes.filter(n => n.value === this.props.value).map((n, i) => this.renderNote(n, i, false))}
-            {this.props.previewNote && this.renderNote(this.props.previewNote, -1, true)}
+            {this.props.notes.filter(n => isInLine(n.value, this.props.value)).map((n, i) => this.renderNote(n, i, false))}
+            {this.props.previewNote && !this.props.previewNote.intersected && this.renderNote(this.props.previewNote, -1, true)}
             </div>
         </div>);
     }

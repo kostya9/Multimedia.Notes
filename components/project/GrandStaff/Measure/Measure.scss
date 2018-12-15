@@ -72,12 +72,12 @@ $line-height: 1px;
     pointer-events: none;
 }
 
-.note-staff-img > svg 
+.note-staff-img svg 
 {
     height: auto;
     width: inherit;
 }
 
-.note-staff-img.is-active > svg path {
+.note-staff-img.is-active svg path {
     fill: blue !important;
 }

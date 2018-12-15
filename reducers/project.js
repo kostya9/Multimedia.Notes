@@ -1,7 +1,7 @@
 import { INIT_PROJECT, ADD_NOTE, REMOVE_NOTE, CHOOSE_LENGTH, PREVIEW_CHANGE, EDIT_MODE_ENTERED, PLAY_MODE_ENTERED } from "../actions/project";
 import { IPC_READ_RESPONSE, IPC_READ_REQUEST } from "../actions/ipcActions"
 import { range } from "../utils/range";
-import {adjustPosition, findIntersection} from './notesMath';
+import {adjustPosition, findIntersection, nextNote} from './notesMath';
 import { playReducer } from "./play";
 
 const minMeasures = 4;
@@ -15,7 +15,7 @@ export const projectReducer = (state = {}, action) => {
                 measures,
                 chosenLength: '4n',
                 mode: 'edit',
-                timeSignature: 3/4,
+                timeSignature: 4/4,
                 playState: {
                     position: 0,
                     playing: false
@@ -54,13 +54,24 @@ export const projectReducer = (state = {}, action) => {
             const measureNumber = state.previewNote.measureNumber;
             const changedMeasure = state.measures[measureNumber];
 
-            const newNote = {
-                value: state.previewNote.value, 
-                position: state.previewNote.position, 
-                length: state.previewNote.length
-            };
+            const intersected = state.previewNote.intersected;
 
-            changedMeasure.notes = [... changedMeasure.notes, newNote];
+            let newNote;
+            if (intersected) {
+                var nextValue = nextNote(intersected.value);
+                newNote = {...intersected, value: nextValue };
+                changedMeasure.notes = [...changedMeasure.notes.filter(n => n !== intersected)];    
+            }
+            else {
+                newNote = {
+                    value: state.previewNote.value, 
+                    position: state.previewNote.position, 
+                    length: state.previewNote.length
+                };
+            }
+
+            changedMeasure.notes = [...changedMeasure.notes, newNote];
+            console.log(changedMeasure, newNote);
 
             let newMeasures = state.measures;
 
@@ -71,7 +82,7 @@ export const projectReducer = (state = {}, action) => {
 
             return {
                 ...state,
-                previewNote: null,
+                previewNote: {...state.previewNote, intersected: newNote},
                 measures: newMeasures,
                 notesToPlay: [newNote]
             }
@@ -140,17 +151,17 @@ export const projectReducer = (state = {}, action) => {
             if(noteIsSame) {
                 return {...state, lastUpdatedPreview: new Date()};
             }
-            
-            if(findIntersection(changedMeasure.notes, adjustedPosition, note, length, timeSignature) != null) {
-                return {...state, previewNote: null, lastUpdatedPreview: new Date()};
-            }
 
+            const intersected = findIntersection(changedMeasure.notes, adjustedPosition, note, length, timeSignature);
+            
             const previewNote = {
                 value: note, 
                 position: adjustedPosition, 
                 length: length,
-                measureNumber: measureNumber
+                measureNumber: measureNumber,
+                intersected
             };
+
             return {...state, previewNote, lastUpdatedPreview: new Date()}
         }
         case CHOOSE_LENGTH:

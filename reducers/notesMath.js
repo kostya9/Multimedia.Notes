@@ -15,7 +15,7 @@ export const findIntersection = (notes, position, value, length, max) => {
     }
 
     return notes
-        .filter(n => n.value === value)
+        .filter(n => isInLine(n.value, value))
         .find(n => isIntersectingWith(n));
 }
 
@@ -29,4 +29,22 @@ export const adjustPosition = (length, position, max) => {
     }
 
     return foundNearest;
+}
+
+export const nextNote = (value) => {
+    if(value.length === 2) {
+        return value[0] + '#' + value[1];
+    }
+
+    if(value[1] == '#') {
+        return value[0] + 'b' + value[2];
+    }
+
+    return value[0] + value[2];
+}
+
+export const isInLine = (value1, value2) => {
+    var lineNumber1 = value1[value1.length - 1];
+    var lineNumber2 = value2[value2.length - 1];
+    return value1[0] === value2[0] && lineNumber1 === lineNumber2;
 }
