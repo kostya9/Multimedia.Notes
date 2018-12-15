@@ -41,7 +41,7 @@ class MeasureLine extends React.Component {
             className += ' is-active';
         }
 
-        return <SVG src={svg.src} className={className} style={{left: left, opacity: isPreview ? 0.5 : 1, width: width}}/>
+        return <SVG src={svg.src} className={className} style={{left: left, opacity: isPreview ? 0.5 : 1, width: width}} key={i}/>
     }
 
     onNoteClick(e) {

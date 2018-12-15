@@ -71,7 +71,6 @@ export const projectReducer = (state = {}, action) => {
             }
 
             changedMeasure.notes = [...changedMeasure.notes, newNote];
-            console.log(changedMeasure, newNote);
 
             let newMeasures = state.measures;
 
