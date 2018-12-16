@@ -14,8 +14,7 @@ const url = require('url')
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-const globalShortcut = electron.globalShortcut
-const remote = electron.remote
+const globalShortcut = electron.globalShortcut;
 const ipcMain = electron.ipcMain;
 
 const {IPC_READ_REQUEST, IPC_READ_RESPONSE, IPC_WRITE_REQUEST} = require('./actions/ipcActions');
@@ -29,7 +28,8 @@ function createWindow () {
     mainWindow = new BrowserWindow({
         minWidth: 1300, minHeight: 800, width: 1300, height: 800, webPreferences: {
             experimentalFeatures: true
-        }
+        },
+        title: "Notes"
     })
 
     var menu = Menu.buildFromTemplate([
@@ -60,7 +60,7 @@ function createWindow () {
   }))
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', function () {
     mainWindow = null
