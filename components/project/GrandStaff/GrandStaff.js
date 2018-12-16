@@ -36,7 +36,7 @@ class GrandStaff extends React.Component {
 
     render() {
         const {measures} = this.props;
-        return <div onMouseLeave={this.onMouseLeave.bind(this)}>
+        return <div onMouseLeave={this.onMouseLeave.bind(this)} className="grand-staff">
                 {measures.map(this.getMeasure.bind(this))}
             </div>
     }

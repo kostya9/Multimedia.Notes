@@ -42,7 +42,7 @@ class Landing extends React.Component {
                     </Card>
                 </Box>
                 <Box align='center' textAlign='center' onClick={this.onReadProject.bind(this)}>
-                    <Card heading="from Google Drive" thumbnail="http://icons.iconarchive.com/icons/marcus-roberto/google-play/512/Google-Drive-icon.png"
+                    <Card heading="Open" thumbnail="http://icons.iconarchive.com/icons/marcus-roberto/google-play/512/Google-Drive-icon.png"
                         className='notes-card' margin={{ horizontal: 'small' }}>
                     </Card>
                 </Box>
