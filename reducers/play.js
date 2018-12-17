@@ -82,12 +82,11 @@ export function playReducer(state, action) {
             // Show which notes are currently playing
             const playingMeasure = state.measures[measureNumber];
 
-            if(measureNumber > 0) {
-                state.measures[measureNumber - 1].notes = state.measures[measureNumber - 1].notes.map(n => ({...n, isActive: false})); 
-            }
-
-            if(measureNumber < state.measures.length - 1) {
-                state.measures[measureNumber + 1].notes = state.measures[measureNumber + 1].notes.map(n => ({...n, isActive: false})); 
+            // Clear previous on start of the next
+            if(Math.abs(measurePosition) < precision) {
+                if(measureNumber > 0) {
+                    state.measures[measureNumber - 1].notes = state.measures[measureNumber - 1].notes.map(n => ({...n, isActive: false})); 
+                }
             }
 
 
