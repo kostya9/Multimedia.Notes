@@ -1,1 +1,3 @@
-# Course project of KPI student for the 4 course (7th semester)
+# Multimedia.Notes
+
+Musical notes player and editor built via Electron
